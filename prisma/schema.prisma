@@ -26,10 +26,11 @@ model User {
 
 model AnimeList {
   id        Int     @id @default(autoincrement())
-  animeId   Int
+  animeId   Int     
   userId    Int
   status    String
   score     Int?
   progress  Int?
   user    User     @relation(fields: [userId], references: [id])
+  @@unique([animeId, userId])
 }
