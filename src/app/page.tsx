@@ -1,6 +1,6 @@
-import LoginView from "@/components/views/auth/Login"
+import GreetingView from "@/components/views/pages/Greeting";
 import React from 'react';
 
 export default function Home() {
-  return <LoginView />;
+  return <GreetingView />;
 }
