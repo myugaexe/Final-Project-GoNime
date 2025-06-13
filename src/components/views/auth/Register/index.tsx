@@ -1,5 +1,6 @@
 import styles from './Register.module.scss';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const RegisterView = () => {
     return (
@@ -7,6 +8,9 @@ const RegisterView = () => {
             <div className={styles.register__form}>
                 <h1 className={styles.register__form__head}>New Here?</h1>
                 <p className={styles.register__form__title}>Sign up your account</p>
+                <div className={styles.register__form__logo}>
+                <Image src="/testImage.png" alt="Logo" width={100} height={100} />
+                </div>
                 <form action="">
                     <div className={styles.register__form__item}>
                         <label htmlFor="fullname">Username</label>

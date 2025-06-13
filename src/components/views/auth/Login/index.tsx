@@ -1,5 +1,6 @@
 import styles from './Login.module.scss';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const LoginView = () => {
     return (
@@ -7,6 +8,9 @@ const LoginView = () => {
             <div className={styles.login__form}>
                 <h1 className={styles.login__form__head}>Welcome!</h1>
                 <p className={styles.login__form__title}>Sign in your account</p>
+                <div className={styles.login__form__logo}>
+                <Image src="/testImage.png" alt="Logo" width={100} height={100} />
+                </div>
                 <form action="">
                     <div className={styles.login__form__item}>
                         <label htmlFor="email">Email</label>
