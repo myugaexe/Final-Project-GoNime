@@ -117,7 +117,7 @@ const RegisterView = () => {
                             required
                         />                        
                     </div>
-                    {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
+                    {error && <p className={styles.register__form__item__input__errorMessage}>{error}</p>}
                     <button className={styles.register__form__button}>Register</button>
                 </form>
                 <p className={styles.register__link}>

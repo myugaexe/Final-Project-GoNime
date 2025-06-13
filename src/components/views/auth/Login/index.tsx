@@ -83,7 +83,7 @@ const LoginView = () => {
                             required
                         />                        
                     </div>
-                    {error && <p className="text-red-600 text-sm mt-2">{error}</p>} 
+                    {error && <p className={styles.login__form__item__input__errorMessage}>{error}</p>}
                     <button className={styles.login__form__button}>Login</button>
                 </form>
                 <p className={styles.login__link}>
