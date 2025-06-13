@@ -21,8 +21,13 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "animeId, userId, and status are required" }, { status: 400 });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const updateData: any = {};
+    interface updateDataProps {
+      status?: string;
+      score?: number | null;
+      progress?: number | null;
+    }
+
+    const updateData: updateDataProps = {};
     if (status !== undefined) updateData.status = status;
     if (score !== undefined) updateData.score = score;
     if (progress !== undefined) updateData.progress = progress;

@@ -11,9 +11,9 @@ export const authOptions: NextAuthOptions = {
         maxAge: 60 * 60,
         updateAge: 60 * 60
     },
-    // pages: {
-    //     signIn: '/auth/login',
-    // },
+    pages: {
+        signIn: '/auth/login',
+    },
     secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
