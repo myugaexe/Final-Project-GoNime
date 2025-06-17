@@ -47,7 +47,7 @@ const LoginView = () => {
         } 
         else {
             router.refresh();
-            router.push('/pages/greeting');
+            router.push('/pages/home');
         }
     }
 
