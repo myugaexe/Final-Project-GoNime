@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styles from "./Home.module.scss";
 
@@ -169,10 +170,10 @@ const HomeView = () => {
         {animes.length > 0 ? (
           <div className={styles.animeGrid}>
             {animes.map((anime: Anime) => (
-              <div key={anime.mal_id} className={styles.animeCard}>
+              <Link href={`/pages/detail/${anime.mal_id}`} key={anime.mal_id} className={styles.animeCard}>
                 <img src={anime.images.jpg.image_url} alt={anime.title} />
                 <p>{anime.title}</p>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
