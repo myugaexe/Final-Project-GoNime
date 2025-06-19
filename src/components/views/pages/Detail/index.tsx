@@ -19,7 +19,7 @@ type Anime = {
 };
 
 type DetailViewProps = {
-  animeId: string;
+  animeId: number;
 };
 
 const DetailView = ({ animeId }: DetailViewProps) => {

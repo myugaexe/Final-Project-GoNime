@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./Home.module.scss";
 
 type Anime = {
@@ -26,32 +27,32 @@ const HomeView = () => {
   const [minScore, setMinScore] = useState("");
   const [orderBy, setOrderBy] = useState("");
 
-  const fetchAnimes = async (pageNum: number) => {
-  setIsLoading(true);
-  try {
-    const res = await fetch(`/api/animelist?page=${pageNum}`);
-    const data = await res.json();
+  const fetchAnimes = useCallback(async (pageNum: number) => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/animelist?page=${pageNum}`);
+      const data = await res.json();
 
-    if (data && Array.isArray(data.data)) {
-      if (data.data.length < 25) setHasMore(false);
+      if (data && Array.isArray(data.data)) {
+        if (data.data.length < 25) setHasMore(false);
 
-      // Hapus anime yang sudah ada sebelumnya berdasarkan mal_id
-      const existingIds = new Set(animes.map((a) => a.mal_id));
-      const newAnime = data.data.filter(
-        (anime: Anime) => !existingIds.has(anime.mal_id)
-      );
+        // Use Map to ensure uniqueness of anime entries
+        const uniqueAnimeMap = new Map([
+          ...animes.map(anime => [anime.mal_id, anime]),
+          ...data.data.map((anime: Anime) => [anime.mal_id, anime])
+        ]);
 
-    setAnimes((prev) => [...prev, ...newAnime]);
+        setAnimes(Array.from(uniqueAnimeMap.values()) as Anime[]);
       }
     } catch (error) {
       console.error("Failed to fetch animes:", error);
       setHasMore(false);
     }
     setIsLoading(false);
-  };
+  }, [animes]);
 
-  const handleSearch = async () => {
-  setIsLoading(true);
+  const handleSearch = useCallback(async () => {
+    setIsLoading(true);
     try {
       const params = new URLSearchParams();
       if (searchQuery.trim()) params.append("q", searchQuery.trim());
@@ -81,8 +82,7 @@ const HomeView = () => {
       setAnimes([]);
     }
     setIsLoading(false);
-  };
-
+  }, [searchQuery, genre, minScore, orderBy]);
 
   const handleReset = () => {
     setSearchQuery("");
@@ -94,18 +94,16 @@ const HomeView = () => {
     setMinScore("");
     setOrderBy("");
   };
-
   useEffect(() => {
     if (!isSearchMode) {
       fetchAnimes(page);
     }
-  }, [page, isSearchMode]);
-
+  }, [page, isSearchMode, fetchAnimes]);
   useEffect(() => {
     if (genre || minScore || orderBy || searchQuery.trim()) {
       handleSearch();
     }
-  }, [genre, minScore, orderBy]);
+  }, [genre, minScore, orderBy, handleSearch, searchQuery]);
 
   return (
     <div className={styles.container}>
@@ -171,7 +169,17 @@ const HomeView = () => {
           <div className={styles.animeGrid}>
             {animes.map((anime: Anime) => (
               <Link href={`/pages/detail/${anime.mal_id}`} key={anime.mal_id} className={styles.animeCard}>
-                <img src={anime.images.jpg.image_url} alt={anime.title} />
+                <Image 
+                  src={anime.images.jpg.image_url} 
+                  alt={anime.title}
+                  width={200}
+                  height={300}
+                  style={{
+                    objectFit: 'cover',
+                    width: '100%',
+                    height: 'auto'
+                  }}
+                />
                 <p>{anime.title}</p>
               </Link>
             ))}
