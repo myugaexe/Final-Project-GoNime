@@ -155,7 +155,7 @@ const HomeView = () => {
         </select>
 
         <button className={styles.iconButton}>
-          <i className="bx bx-list-ul-square"></i>
+          < i className="bxr  bx-bookmark"></i> 
         </button>
         <button className={styles.iconButton}>
           <i className="bx bx-user-circle"></i>

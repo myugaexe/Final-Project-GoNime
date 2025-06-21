@@ -1,4 +1,4 @@
-import GreetingView from "@/components/views/pages/Greeting"
+import GreetingView from "@/components/views/pages/Greeting/greeting"
 
 export const metadata = {
   title: "GonNime!", 

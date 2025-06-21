@@ -1,4 +1,4 @@
-import HomeView from "@/components/views/pages/Home"
+import HomeView from "@/components/views/pages/Home/home"
 
 export const metadata = {
   title: "GonNime!", 

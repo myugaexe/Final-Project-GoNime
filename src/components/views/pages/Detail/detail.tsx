@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import style from './Detail.module.scss';
+import RateForm from './rateform'; 
 
 type Anime = {
   trailer?: { embed_url?: string };
@@ -16,6 +17,7 @@ type Anime = {
   score: number;
   scored_by: number;
   synopsis: string;
+  episodes: number;
 };
 
 type DetailViewProps = {
@@ -24,6 +26,7 @@ type DetailViewProps = {
 
 const DetailView = ({ animeId }: DetailViewProps) => {
   const [anime, setAnime] = useState<Anime | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false); 
 
   useEffect(() => {
     fetch(`https://api.jikan.moe/v4/anime/${animeId}`)
@@ -33,13 +36,14 @@ const DetailView = ({ animeId }: DetailViewProps) => {
   }, [animeId]);
 
   if (!anime) return <div>Loading...</div>;
-  
+
   return (
     <div>
-      <div className={style.topcontainer}>     
+      <div className={style.topcontainer}>
         <Link href="/pages/home" className={style.backButton}>
-            < i className="bxr  bx-chevron-left-circle"  ></i> 
-        </Link>   
+          <i className="bx bx-chevron-left-circle"></i>
+        </Link>
+
         {anime.trailer?.embed_url ? (
           <iframe
             className={style.topcontainer__trailer}
@@ -80,7 +84,7 @@ const DetailView = ({ animeId }: DetailViewProps) => {
           <div className={style.statBox}>
             <div className={style.statInner}>
               <div className={style.statItem}>
-                <i className="bxr  bx-trophy-star"></i> 
+                <i className="bx bx-trophy-star"></i>
                 <div>
                   <div className={style.statNumber}>#{anime.rank}</div>
                   <div className={style.statLabel}>Ranked</div>
@@ -93,6 +97,14 @@ const DetailView = ({ animeId }: DetailViewProps) => {
                   <div className={style.statLabel}>Popularity</div>
                 </div>
               </div>
+
+              <div className={style.statItem}>
+                <i className='bx bx-list-ul-square'></i>
+                <div>
+                  <div className={style.statNumber}>{anime.episodes ?? 'N/A'}</div>
+                  <div className={style.statLabel}>Episodes</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -101,16 +113,16 @@ const DetailView = ({ animeId }: DetailViewProps) => {
               <div className={style.statItem}>
                 <i className="bx bx-star"></i>
                 <div>
-                  <div className={style.statNumber}>
-                    {anime.score ?? 'N/A'}
-                  </div>
+                  <div className={style.statNumber}>{anime.score ?? 'N/A'}</div>
                   <div className={style.statLabel}>
                     from {anime.scored_by?.toLocaleString() || '0'} users
                   </div>
                 </div>
               </div>
               <div className={style.statItem}>
-                <button className={style.rateNow}>Rate Now</button>
+                <button className={style.rateNow} onClick={() => setIsPopupOpen(true)}>
+                  Rate Now
+                </button>
               </div>
             </div>
           </div>
@@ -120,6 +132,19 @@ const DetailView = ({ animeId }: DetailViewProps) => {
           {anime.synopsis}
         </div>
       </div>
+
+      <RateForm
+        onClose={() => setIsPopupOpen(false)}
+        isOpen={isPopupOpen}
+        title={anime.title}
+        imageUrl={anime.images.jpg.image_url}
+        studio={anime.studios[0]?.name || 'Unknown Studio'}
+        genres={anime.genres.map(g => g.name).join(', ')}
+        aired={anime.aired.string}
+        totalEpisodes={anime.episodes}
+      />
+
+
     </div>
   );
 };
