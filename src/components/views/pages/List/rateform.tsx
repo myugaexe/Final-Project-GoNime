@@ -15,6 +15,7 @@ type RatePopupProps = {
   totalEpisodes: number;
 };
 
+
 const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, aired, totalEpisodes }: RatePopupProps) => {
   const [status, setStatus] = useState("watching");
   const [episode, setEpisode] = useState(0);
@@ -27,18 +28,19 @@ const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, a
 
     try {
       const res = await fetch('/api/editanimelist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          animeId,
-          status,
-          progress: episode,
-          score: rating
-        })
-      });
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      animeId,
+      status,
+      progress: episode,
+      score: rating
+    })
+  });
+
 
       if (res.ok) {
         console.log('Anime saved successfully!');
