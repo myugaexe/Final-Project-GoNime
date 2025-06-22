@@ -17,10 +17,19 @@ export async function GET() {
 
     try {
         const animeList = await prisma.animeList.findMany({
-        where: { userId: userId },
-        select: { progress: true },
-        take: 5
+            where: { userId },
+            select: { animeId: true, progress: true },
+            take: 5,
         });
+
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { username: true },
+        });
+
+        if (!user) {
+            return NextResponse.json({ error: "User not found" }, { status: 404 });
+        }
 
         const totalAnime = animeList.length;
         const totalEpisodesWatched = animeList.reduce(
@@ -30,6 +39,7 @@ export async function GET() {
 
         return NextResponse.json({
         userId: userId,
+        username: user.username,
         totalAnime,
         totalEpisodesWatched,
         lastUpdates: animeList
