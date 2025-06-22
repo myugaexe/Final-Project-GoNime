@@ -154,9 +154,11 @@ const HomeView = () => {
           <option value="score">Score</option>
         </select>
 
+        <Link href="/pages/list">  
         <button className={styles.iconButton}>
           < i className="bxr  bx-bookmark"></i> 
         </button>
+        </Link>
         <Link href="/pages/profile">
         <button className={styles.iconButton}>
           <i className="bx bx-user-circle"></i>          

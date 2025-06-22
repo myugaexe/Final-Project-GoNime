@@ -1,0 +1,115 @@
+.container {
+  padding: 16px;
+}
+
+.filterBar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;  
+  margin: 0 auto;
+  flex-wrap: wrap;
+  padding: 15px;
+  border: #486284 1px solid;
+  width: 90%;
+  background-color: #486284;
+}
+
+.filterButton {
+  padding: 10px 16px;
+  border: 1px solid #486284;
+  background: white;
+  color: #4d6b92;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: black 1px solid;
+
+  &:hover {
+    background: #f0f4fa;
+  }
+
+  &.active {
+    background: #304e76;
+    color: white;
+  }
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 20 auto;
+  width: 90%;
+  gap: 12px;
+}
+
+.animeCard {
+  display: flex;
+  align-items: center;
+  border: 1px solid #aaa;
+  padding: 12px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.animeImageBox {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  margin-right: 16px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.animeInfo {
+  flex: 1;
+
+  h3 {
+    margin: 0;
+    color: #486284;
+  }
+
+  p {
+    margin: 4px 0;
+    color: #666;
+  }
+
+  .ratingStars {
+    color: #486284;
+    font-size: 14px;
+  }
+}
+
+.editButton {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #486284;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  background: #ccc;
+  &__backButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #486284;  
+    font-size: 40px;
+  }
+}
+
