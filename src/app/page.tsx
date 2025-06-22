@@ -1,6 +1,8 @@
-import GreetingView from "@/components/views/pages/Greeting/greeting";
 import React from 'react';
+import HomePage from './pages/home/page';
 
 export default function Home() {
-  return <GreetingView />;
+  return(
+    <HomePage />
+  )
 }

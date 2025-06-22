@@ -15,18 +15,18 @@ type Anime = {
 };
 
 const ListView = () => {
-  const [activeFilter, setActiveFilter] = useState('watching');
+  const [activeFilter, setActiveFilter] = useState('Currently Watching');
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedAnime, setSelectedAnime] = useState<Anime | null>(null);
 
   const filters = [
-  { value: 'watching', label: 'Currently Watching' },
-  { value: 'completed', label: 'Completed' },
-  { value: 'on-hold', label: 'On Hold' },
-  { value: 'dropped', label: 'Dropped' },
-  { value: 'plan-to-watch', label: 'Plan to Watch' },
-]
+    { value: 'Currently Watching', label: 'Currently Watching' },
+    { value: 'Completed', label: 'Completed' },
+    { value: 'On Hold', label: 'On Hold' },
+    { value: 'Dropped', label: 'Dropped' },
+    { value: 'Plan to Watch', label: 'Plan to Watch' },
+  ];
 
   useEffect(() => {
     const fetchAnimeList = async () => {
@@ -42,10 +42,10 @@ const ListView = () => {
     fetchAnimeList();
   }, []);
 
-  const filteredAnimeList = animeList.filter((anime) => {
-  const animeStatus = anime.status.toLowerCase().replace(/\s+/g, '-');
-  return animeStatus === activeFilter;
-});
+  const filteredAnimeList = animeList.filter(
+    (anime) => anime.status === activeFilter
+  );
+
 
   return (
     <div className={styles.container}>

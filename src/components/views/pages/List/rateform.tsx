@@ -17,7 +17,7 @@ type RatePopupProps = {
 
 
 const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, aired, totalEpisodes }: RatePopupProps) => {
-  const [status, setStatus] = useState("watching");
+  const [status, setStatus] = useState("Currently Watching");
   const [episode, setEpisode] = useState(0);
   const [rating, setRating] = useState(8.5);
 
@@ -77,11 +77,11 @@ const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, a
             onChange={e => setStatus(e.target.value)}
             className={styles.popup__select}
           >
-            <option value="watching">Currently Watching</option>
-            <option value="completed">Completed</option>
-            <option value="on-hold">On Hold</option>
-            <option value="dropped">Dropped</option>
-            <option value="plan-to-watch">Plan to Watch</option>
+            <option value="Currently Watching">Currently Watching</option>
+            <option value="Completed">Completed</option>
+            <option value="On Hold">On Hold</option>
+            <option value="Dropped">Dropped</option>
+            <option value="Plan to Watch">Plan to Watch</option>
           </select>
 
           <label className={styles.popup__label}>Episode</label>
