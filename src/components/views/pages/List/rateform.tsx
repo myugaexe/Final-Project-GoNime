@@ -26,7 +26,7 @@ const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, a
     e.preventDefault();
 
     try {
-      const res = await fetch('/api/addanimelist', {
+      const res = await fetch('/api/editanimelist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -1,15 +1,13 @@
-import ListView from "@/components/views/pages/List/list"
+import ListView from "@/components/views/pages/List/list";
 
 export const metadata = {
-  title: "GonNime!", 
+  title: "GonNime!",
 };
 
 const ListPage = () => {
-    return (
-       <>
-       <ListView />        
-       </>
-    )
-}
+  return (
+    <ListView />
+  );
+};
 
 export default ListPage;

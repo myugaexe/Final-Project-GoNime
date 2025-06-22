@@ -57,13 +57,13 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (token as any)["id"] = user.id.toString(); // always string
+        (token as any)["id"] = user.id.toString();
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user && token.id) {
-        session.user.id = token.id.toString(); // always string
+        session.user.id = token.id.toString();
       }
       return session;
     },

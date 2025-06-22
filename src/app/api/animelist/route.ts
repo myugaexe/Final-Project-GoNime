@@ -1,51 +1,50 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { db } from '@/lib/prisma';
+import { NextResponse } from "next/server";
+import { db } from "@/lib/prisma";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth/next";
 
-export async function POST(req: Request) {
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user || !session.user.id) {
+    return NextResponse.json({ error: "You must Log-in" }, { status: 401 });
+  }
+  
+  const userId = Number(session.user.id);
+
+  if (!userId) {
+    return NextResponse.json({ error: "User ID is required" }, { status: 400 });
+  }
+
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session || !session.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await db.user.findUnique({
-      where: { email: session.user.email }
+    const animeList = await db.animeList.findMany({
+      where: { userId },
+      select: { animeId: true, status: true }
     });
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
-    const body = await req.json();
-    const { animeId, status, progress, score } = body;
-
-    const animeEntry = await db.animeList.upsert({
-      where: {
-        animeId_userId: {
-          animeId: animeId,
-          userId: user.id
+    const detailedAnime = await Promise.all(
+      animeList.map(async (anime) => {
+        try {
+          const res = await fetch(`https://api.jikan.moe/v4/anime/${anime.animeId}`);
+          const jikanData = await res.json();
+          return {
+            ...anime,
+            title: jikanData.data.title,
+            image_url: jikanData.data.images.jpg.image_url,
+            studios: jikanData.data.studios,
+            aired: jikanData.data.aired.string,
+          };
+        } catch (error) {
+          console.error(`Failed to fetch from Jikan for ID ${anime.animeId}`, error);
+          return null;
         }
-      },
-      update: {
-        status,
-        progress,
-        score
-      },
-      create: {
-        animeId: animeId,
-        userId: user.id,
-        status,
-        progress,
-        score
-      }
-    });
+      })
+    );
 
-    return NextResponse.json({ message: 'Anime saved successfully', animeEntry });
-  } catch (err) {
-    console.error('Error saving anime:', err);
-    return NextResponse.json({ error: 'Failed to save anime' }, { status: 500 });
+    const result = detailedAnime.filter((a) => a !== null);
+
+    return NextResponse.json(result, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching anime list for user:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

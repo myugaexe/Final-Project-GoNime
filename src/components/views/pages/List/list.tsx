@@ -3,21 +3,24 @@
 import { useEffect, useState } from 'react';
 import styles from './List.module.scss';
 import Link from 'next/link';
+import RateForm from './rateform';
 
 type Anime = {
+  image_url: string | Blob | undefined;
   mal_id: number;
   title: string;
-  images: { jpg: { image_url: string } };
   studios: { name: string }[];
   aired: { string: string };
+  status: string;
 };
 
 const ListView = () => {
   const [activeFilter, setActiveFilter] = useState('currently watching');
   const [animeList, setAnimeList] = useState<Anime[]>([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const filters = [
-    'currently watching',
+    'watching',
     'completed',
     'on hold',
     'dropped',
@@ -27,9 +30,9 @@ const ListView = () => {
   useEffect(() => {
     const fetchAnimeList = async () => {
       try {
-        const res = await fetch(`https://api.jikan.moe/v4/top/anime?limit=10`);
+        const res = await fetch(`/api/animelist`);
         const data = await res.json();
-        setAnimeList(data.data);
+        setAnimeList(data);
       } catch (err) {
         console.error('Failed to fetch anime list:', err);
       }
@@ -37,6 +40,11 @@ const ListView = () => {
 
     fetchAnimeList();
   }, []);
+
+  const filteredAnimeList = animeList.filter(
+  (anime) => anime.status.toLowerCase() === activeFilter.toLowerCase()
+);
+
 
   return (
     <div className={styles.container}>
@@ -59,20 +67,33 @@ const ListView = () => {
       </div>
 
       <div className={styles.listContainer}>
-        {animeList.map((anime) => (
+        {filteredAnimeList.map((anime) => (
           <div key={anime.mal_id} className={styles.animeCard}>
             <div className={styles.animeImageBox}>
-              <img src={anime.images.jpg.image_url} alt={anime.title} />
+              <img src={anime.image_url} alt={anime.title} />
             </div>
             <div className={styles.animeInfo}>
               <h3>{anime.title}</h3>
               <p>{anime.studios[0]?.name || 'Unknown Studio'}</p>
               <p>{anime.aired.string}</p>
             </div>
-            <button className={styles.editButton}>Edit</button>
+            <button className={styles.editButton} onClick={() => setIsPopupOpen(true)}>Edit</button>
           </div>
         ))}
       </div>
+
+      <RateForm
+        onClose={() => setIsPopupOpen(false)}
+        isOpen={isPopupOpen}
+        animeId={animeId}
+        title={anime.title}
+        imageUrl={anime.images.jpg.image_url}
+        studio={anime.studios[0]?.name || 'Unknown Studio'}
+        genres={anime.genres.map(g => g.name).join(', ')}
+        aired={anime.aired.string}
+        totalEpisodes={anime.episodes}
+      />
+      
     </div>
   );
 };

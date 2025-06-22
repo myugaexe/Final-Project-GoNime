@@ -7,10 +7,10 @@ export async function DELETE(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
       if (!session || !session.user || !session.user.id) {
-         return NextResponse.json({ error: "You must Log-in" }, { status: 401 });
-     }
+        return NextResponse.json({ error: "You must Log-in" }, { status: 401 });
+    }
 
-     const userId = Number(session.user.id);
+    const userId = Number(session.user.id);
 
     const body = await req.json();
     const { animeId } = body;

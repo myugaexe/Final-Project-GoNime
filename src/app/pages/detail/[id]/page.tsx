@@ -1,4 +1,3 @@
-// src/app/detail/[id]/page.tsx
 import DetailView from "@/components/views/pages/Detail/detail";
 
 export const metadata = {
