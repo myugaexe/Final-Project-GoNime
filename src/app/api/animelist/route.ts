@@ -19,9 +19,10 @@ export async function GET() {
 
   try {
     const animeList = await db.animeList.findMany({
-      where: { userId },
-      select: { animeId: true, status: true, progress: true },
-    });
+    where: { userId },
+    select: { animeId: true, status: true, progress: true, score: true,},
+  });
+
 
     const detailedAnime = [];
 
@@ -35,6 +36,7 @@ export async function GET() {
             animeId: anime.animeId,
             status: anime.status,
             progress: anime.progress ?? 0,
+            score: anime.score ?? 0, 
             title: jikanData.data.title,
             image_url: jikanData.data.images?.jpg?.image_url || '',
             studios: jikanData.data.studios || [],

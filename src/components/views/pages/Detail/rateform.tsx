@@ -13,9 +13,10 @@ type RatePopupProps = {
   genres: string;
   aired: string;
   totalEpisodes: number;
+  showToast: (message: string) => void;
 };
 
-const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, aired, totalEpisodes }: RatePopupProps) => {
+const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, aired, totalEpisodes, showToast }: RatePopupProps) => {
   const [status, setStatus] = useState("Currently Watching");
   const [episode, setEpisode] = useState(0);
   const [rating, setRating] = useState(8.5);
@@ -42,10 +43,12 @@ const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, a
 
       if (res.ok) {
         console.log('Anime saved successfully!');
+        showToast('Anime added!');
         onClose();
       } else {
         const err = await res.json();
         console.error('Failed to save anime:', err?.error);
+        showToast('Anime failed to add!');
       }
     } catch (err) {
       console.error('Error submitting anime:', err);

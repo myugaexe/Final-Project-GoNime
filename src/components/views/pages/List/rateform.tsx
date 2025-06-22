@@ -13,11 +13,12 @@ type RatePopupProps = {
   genres: string;
   aired: string;
   totalEpisodes: number;
+  showToast: (message: string) => void;
 };
 
 
-const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, aired, totalEpisodes }: RatePopupProps) => {
-  const [status, setStatus] = useState("Currently Watching");
+const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, aired, totalEpisodes, showToast }: RatePopupProps) => {
+  const [status, setStatus] = useState("watching");
   const [episode, setEpisode] = useState(0);
   const [rating, setRating] = useState(8.5);
 
@@ -43,16 +44,49 @@ const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, a
 
 
       if (res.ok) {
-        console.log('Anime saved successfully!');
-        onClose();
-      } else {
+      console.log('Anime saved successfully!');
+      showToast('Anime updated!');
+      onClose();
+    } else {
         const err = await res.json();
         console.error('Failed to save anime:', err?.error);
+        showToast('Anime failed updated!');
       }
     } catch (err) {
       console.error('Error submitting anime:', err);
     }
   };
+
+  const handleDelete = async () => {
+  if (!confirm(`Are you sure you want to delete "${title}" from your list?`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/deleteanimelist', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        animeId
+      })
+    });
+
+    if (res.ok) {
+      console.log('Anime deleted successfully!');
+      showToast('Anime deleted!');
+      onClose();
+    } else {
+      const err = await res.json();
+      console.error('Failed to delete anime:', err?.error);
+      showToast('Anime failed deleted!');
+    }
+  } catch (err) {
+    console.error('Error deleting anime:', err);
+  }
+};
 
   return (
     <div className={styles.popup__overlay}>
@@ -108,13 +142,16 @@ const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, a
             />
             <span>{rating.toFixed(1)}/10</span>
           </div>
-
+  
           <div className={styles.popup__buttonRow}>
+            <button type="button" onClick={handleDelete} className={styles.popup__deleteButton}>
+              Delete
+            </button>
             <button type="button" onClick={onClose} className={styles.popup__cancelButton}>
               Cancel
             </button>
             <button type="submit" className={styles.popup__submitButton}>
-              Submit
+              Save
             </button>
           </div>
         </form>

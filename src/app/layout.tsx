@@ -34,6 +34,7 @@ export default function RootLayout({
           href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css"
           rel="stylesheet"
         />
+        <link rel="icon" href="/icon.png" type="image/png" />
       </head>
       <body
         className={`${montserrat.className} ${geistSans.variable} ${geistMono.variable}`}
@@ -43,4 +44,3 @@ export default function RootLayout({
     </html>
   );
 }
-

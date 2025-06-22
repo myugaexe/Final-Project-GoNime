@@ -17,7 +17,7 @@ type Anime = {
   score: number;
   scored_by: number;
   synopsis: string;
-  episodes: number;
+  episodes: number;  
 };
 
 type DetailViewProps = {
@@ -27,6 +27,7 @@ type DetailViewProps = {
 const DetailView = ({ animeId }: DetailViewProps) => {
   const [anime, setAnime] = useState<Anime | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false); 
+  const [toast, setToast] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`https://api.jikan.moe/v4/anime/${animeId}`)
@@ -36,6 +37,11 @@ const DetailView = ({ animeId }: DetailViewProps) => {
   }, [animeId]);
 
   if (!anime) return <div>Loading...</div>;
+
+   const showToast = (message: string) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 2000); 
+  };
 
   return (
     <div>
@@ -143,8 +149,14 @@ const DetailView = ({ animeId }: DetailViewProps) => {
         genres={anime.genres.map(g => g.name).join(', ')}
         aired={anime.aired.string}
         totalEpisodes={anime.episodes}
+        showToast={showToast}
       />
 
+      {toast && (
+        <div className={style.toast}>
+          {toast}
+        </div>
+      )}
     </div>
   );
 };

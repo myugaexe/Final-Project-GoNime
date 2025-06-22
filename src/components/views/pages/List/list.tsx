@@ -12,6 +12,7 @@ type Anime = {
   studios: { name: string }[];
   aired: { string: string };
   status: string;
+  score: number; 
 };
 
 const ListView = () => {
@@ -19,6 +20,7 @@ const ListView = () => {
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedAnime, setSelectedAnime] = useState<Anime | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
 
   const filters = [
     { value: 'Currently Watching', label: 'Currently Watching' },
@@ -46,6 +48,10 @@ const ListView = () => {
     (anime) => anime.status === activeFilter
   );
 
+  const showToast = (message: string) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 2000); 
+  };
 
   return (
     <div className={styles.container}>
@@ -77,7 +83,8 @@ const ListView = () => {
               <h3>{anime.title}</h3>
               <p>{anime.studios[0]?.name || 'Unknown Studio'}</p>
               <p>{anime.aired.string}</p>
-            </div>
+              <p>My Rating: {anime.score}/10</p>
+            </div>            
             <button
               className={styles.editButton}
               onClick={() => {
@@ -85,7 +92,7 @@ const ListView = () => {
                 setIsPopupOpen(true);
               }}
             >
-              Edit
+              <i className="bx bx-pencil"></i>
             </button>
           </div>
         ))}
@@ -105,9 +112,15 @@ const ListView = () => {
           genres={'Unknown'} 
           aired={selectedAnime.aired.string}
           totalEpisodes={12} 
+          showToast={showToast}
         />
       )}
       
+      {toast && (
+        <div className={styles.toast}>
+          {toast}
+        </div>
+      )}
     </div>
   );
 };
