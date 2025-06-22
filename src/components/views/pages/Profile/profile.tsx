@@ -89,7 +89,15 @@ const ProfileView = () => {
       </header>
 
       <section className={styles.profileSection}>
-        <div className={styles.profileImage} />
+        <div className={styles.profileImage}>
+          <Image
+            src="/testImage.png" 
+            alt="Profile Picture" 
+            width={160} 
+            height={160} 
+            style={{ borderRadius: '50%' }}
+                />
+        </div>
         <div className={styles.profileInfo}>
           <h2 className={styles.username}>{userStats?.username ?? 'Loading...'}</h2>
           <div className={styles.statsBox}>
