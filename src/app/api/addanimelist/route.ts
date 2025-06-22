@@ -7,26 +7,25 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user || !session.user.id) {
-         return NextResponse.json({ error: "You must Log-in" }, { status: 401 });
+      return NextResponse.json({ error: "You must Log-in" }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const animeId = Number(body.animeId);
+    const { status, score, progress } = body;
+
+    if (!animeId || !status) {
+      return NextResponse.json({ error: "animeId and status are required" }, { status: 400 });
     }
 
     const userId = Number(session.user.id);
 
-    //const userId = 1; // For testing purposes, replace with session.user.id in production
-
-    const body = await req.json();
-    const { animeId, status, score, progress } = body;
-
-    if (!animeId || !userId || !status) {
-      return NextResponse.json({ error: "animeId, userId, and status are required" }, { status: 400 });
-    }
-
     const existingAnime = await db.animeList.findFirst({
-        where: {
-            animeId,
-            userId,
-        }
-    })
+      where: {
+        animeId,
+        userId,
+      }
+    });
     if (existingAnime) {
       return NextResponse.json({ error: "Anime already exists in the list" }, { status: 409 });
     }

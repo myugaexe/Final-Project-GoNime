@@ -12,8 +12,6 @@ export async function DELETE(req: NextRequest) {
 
      const userId = Number(session.user.id);
 
-    //const userId = 1; // For testing purposes, replace with session.user.id in production
-
     const body = await req.json();
     const { animeId } = body;
 

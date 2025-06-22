@@ -11,8 +11,6 @@ export async function GET() {
 
     const userId = Number(session.user.id);
 
-    //const userId = 1; // For testing purposes, replace with session.user.id in production
-
     if (!userId) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
     }

@@ -8,21 +8,20 @@ export async function GET(req: NextRequest) {
     const query = searchParams.get("q") || "";
     const genre = searchParams.get("genre");
     const minScore = searchParams.get("minScore");
-    const orderBy = searchParams.get("orderBy"); // e.g., "popularity", "score"
+    const orderBy = searchParams.get("orderBy");
 
     const params: Record<string, string> = {};
     if (query) params.q = query;
     if (genre) params.genres = genre;
     if (minScore) params.min_score = minScore;
 
-    // Always order descending for popularity/score
     if (orderBy === "popularity") {
         params.order_by = "popularity";
-        params.sort = "asc"; // Popularity ascending
+        params.sort = "asc";
     } 
     else if (orderBy === "score") {
         params.order_by = "score";
-        params.sort = "desc"; // Score descending
+        params.sort = "desc";
     }
 
     const url = new URL(JIKAN_API_URL);
