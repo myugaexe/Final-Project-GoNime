@@ -5,6 +5,7 @@ import styles from './RateForm.module.scss';
 type RatePopupProps = {
   isOpen: boolean;
   onClose: () => void;
+  animeId: number;
   title: string;
   imageUrl: string;
   studio: string;
@@ -13,16 +14,41 @@ type RatePopupProps = {
   totalEpisodes: number;
 };
 
-const RateForm = ({ isOpen, onClose, title, imageUrl, studio, genres, aired, totalEpisodes }: RatePopupProps) => {
+const RateForm = ({ isOpen, onClose, animeId, title, imageUrl, studio, genres, aired, totalEpisodes }: RatePopupProps) => {
   const [status, setStatus] = useState("watching");
   const [episode, setEpisode] = useState(0);
   const [rating, setRating] = useState(8.5);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();    
-    onClose();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch('/api/animelist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          animeId,
+          status,
+          progress: episode,
+          score: rating
+        })
+      });
+
+      if (res.ok) {
+        console.log('Anime saved successfully!');
+        onClose();
+      } else {
+        const err = await res.json();
+        console.error('Failed to save anime:', err?.error);
+      }
+    } catch (err) {
+      console.error('Error submitting anime:', err);
+    }
   };
 
   return (

@@ -1,0 +1,176 @@
+.container {
+  padding: 16px;
+  font-family: sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  background: #ccc;
+  &__backButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #486284;  
+    font-size: 40px;
+  }
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #486284;
+}
+
+.profileSection {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border: 1px solid #ccc;
+  padding: 24px;
+  position: relative;
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 3%;
+}
+
+.profileImage {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: #eee;
+  border: 1px solid #aaa;
+}
+
+.profileInfo {
+  flex: 1;
+}
+
+.username {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #486284;
+}
+
+.statsBox {
+  display: flex;
+  gap: 50px;
+  background: #f9f9f9;
+  padding: 16px;
+  border: 1px solid #ccc;
+  width: 70%;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  height: 60px;  
+}
+
+.statIcon {
+  width: 32px;
+  height: 32px;
+  color: #486284;  
+  font-size: 40px;
+  margin-left: 50px;
+  margin-bottom: 10px;
+}
+
+.statText {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-left: 16px;
+}
+
+.statNumber {
+  font-size: 18px;
+  font-weight: bold;
+  color: #486284;
+}
+
+.statLabel {
+  font-size: 14px;
+  color: #666;
+}
+
+.updatesSection {
+  margin-top: 24px;
+}
+
+.updatesTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #486284;
+  margin-left: 15%;
+}
+
+.animeGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-left: 15%;
+}
+
+.animeCard {
+  background: #e1e8f0;
+  padding: 0.75rem;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #ccc;
+}
+
+.animeCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.animeCard img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  object-fit: cover;
+  height: 180px;
+}
+
+.animeCard p {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.logoutButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #c0392b;
+  }
+
+  i {
+    font-size: 18px;
+  }
+}

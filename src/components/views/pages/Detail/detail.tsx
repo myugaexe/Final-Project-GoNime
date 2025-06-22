@@ -136,6 +136,7 @@ const DetailView = ({ animeId }: DetailViewProps) => {
       <RateForm
         onClose={() => setIsPopupOpen(false)}
         isOpen={isPopupOpen}
+        animeId={animeId}
         title={anime.title}
         imageUrl={anime.images.jpg.image_url}
         studio={anime.studios[0]?.name || 'Unknown Studio'}
@@ -143,7 +144,6 @@ const DetailView = ({ animeId }: DetailViewProps) => {
         aired={anime.aired.string}
         totalEpisodes={anime.episodes}
       />
-
 
     </div>
   );

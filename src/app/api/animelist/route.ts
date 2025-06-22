@@ -1,18 +1,51 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { db } from '@/lib/prisma';
 
-const BASE_URL = "https://api.jikan.moe/v4/top/anime";
-
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const page = searchParams.get("page") || "1";
-
+export async function POST(req: Request) {
   try {
-    const res = await fetch(`${BASE_URL}?page=${page}`);
-    const data = await res.json();
+    const session = await getServerSession(authOptions);
 
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error("Error fetching anime list:", error);
-    return NextResponse.json({ error: "Failed to fetch anime list" }, { status: 500 });
+    if (!session || !session.user?.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const user = await db.user.findUnique({
+      where: { email: session.user.email }
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    const body = await req.json();
+    const { animeId, status, progress, score } = body;
+
+    const animeEntry = await db.animeList.upsert({
+      where: {
+        animeId_userId: {
+          animeId: animeId,
+          userId: user.id
+        }
+      },
+      update: {
+        status,
+        progress,
+        score
+      },
+      create: {
+        animeId: animeId,
+        userId: user.id,
+        status,
+        progress,
+        score
+      }
+    });
+
+    return NextResponse.json({ message: 'Anime saved successfully', animeEntry });
+  } catch (err) {
+    console.error('Error saving anime:', err);
+    return NextResponse.json({ error: 'Failed to save anime' }, { status: 500 });
   }
 }

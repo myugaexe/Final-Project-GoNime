@@ -30,7 +30,7 @@ const HomeView = () => {
   const fetchAnimes = useCallback(async (pageNum: number) => {
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/animelist?page=${pageNum}`);
+      const res = await fetch(`/api/homepage?page=${pageNum}`);
       const data = await res.json();
 
       if (data && Array.isArray(data.data)) {
@@ -157,9 +157,11 @@ const HomeView = () => {
         <button className={styles.iconButton}>
           < i className="bxr  bx-bookmark"></i> 
         </button>
+        <Link href="/pages/profile">
         <button className={styles.iconButton}>
-          <i className="bx bx-user-circle"></i>
+          <i className="bx bx-user-circle"></i>          
         </button>
+        </Link>
       </div>
 
       <div className={styles.section}>
