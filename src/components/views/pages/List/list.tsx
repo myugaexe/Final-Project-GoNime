@@ -7,7 +7,7 @@ import RateForm from './rateform';
 
 type Anime = {
   image_url: string | Blob | undefined;
-  mal_id: number;
+  animeId: number;
   title: string;
   studios: { name: string }[];
   aired: { string: string };
@@ -15,17 +15,18 @@ type Anime = {
 };
 
 const ListView = () => {
-  const [activeFilter, setActiveFilter] = useState('currently watching');
+  const [activeFilter, setActiveFilter] = useState('watching');
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedAnime, setSelectedAnime] = useState<Anime | null>(null);
 
   const filters = [
-    'watching',
-    'completed',
-    'on hold',
-    'dropped',
-    'plan to watch',
-  ];
+  { value: 'watching', label: 'Currently Watching' },
+  { value: 'completed', label: 'Completed' },
+  { value: 'on-hold', label: 'On Hold' },
+  { value: 'dropped', label: 'Dropped' },
+  { value: 'plan-to-watch', label: 'Plan to Watch' },
+]
 
   useEffect(() => {
     const fetchAnimeList = async () => {
@@ -41,10 +42,10 @@ const ListView = () => {
     fetchAnimeList();
   }, []);
 
-  const filteredAnimeList = animeList.filter(
-  (anime) => anime.status.toLowerCase() === activeFilter.toLowerCase()
-);
-
+  const filteredAnimeList = animeList.filter((anime) => {
+  const animeStatus = anime.status.toLowerCase().replace(/\s+/g, '-');
+  return animeStatus === activeFilter;
+});
 
   return (
     <div className={styles.container}>
@@ -57,18 +58,18 @@ const ListView = () => {
       <div className={styles.filterBar}>
         {filters.map((filter) => (
           <button
-            key={filter}
-            className={`${styles.filterButton} ${activeFilter === filter ? styles.active : ''}`}
-            onClick={() => setActiveFilter(filter)}
+            key={filter.value}
+            className={`${styles.filterButton} ${activeFilter === filter.value ? styles.active : ''}`}
+            onClick={() => setActiveFilter(filter.value)}
           >
-            {filter.charAt(0).toUpperCase() + filter.slice(1)}
+            {filter.label}
           </button>
         ))}
       </div>
 
       <div className={styles.listContainer}>
         {filteredAnimeList.map((anime) => (
-          <div key={anime.mal_id} className={styles.animeCard}>
+          <div key={anime.animeId} className={styles.animeCard}>
             <div className={styles.animeImageBox}>
               <img src={anime.image_url} alt={anime.title} />
             </div>
@@ -77,22 +78,35 @@ const ListView = () => {
               <p>{anime.studios[0]?.name || 'Unknown Studio'}</p>
               <p>{anime.aired.string}</p>
             </div>
-            <button className={styles.editButton} onClick={() => setIsPopupOpen(true)}>Edit</button>
+            <button
+              className={styles.editButton}
+              onClick={() => {
+                setSelectedAnime(anime);
+                setIsPopupOpen(true);
+              }}
+            >
+              Edit
+            </button>
           </div>
         ))}
       </div>
 
-      <RateForm
-        onClose={() => setIsPopupOpen(false)}
-        isOpen={isPopupOpen}
-        animeId={animeId}
-        title={anime.title}
-        imageUrl={anime.images.jpg.image_url}
-        studio={anime.studios[0]?.name || 'Unknown Studio'}
-        genres={anime.genres.map(g => g.name).join(', ')}
-        aired={anime.aired.string}
-        totalEpisodes={anime.episodes}
-      />
+      {selectedAnime && (
+        <RateForm
+          onClose={() => {
+            setIsPopupOpen(false);
+            setSelectedAnime(null);
+          }}
+          isOpen={isPopupOpen}
+          animeId={selectedAnime.animeId}
+          title={selectedAnime.title}
+          imageUrl={typeof selectedAnime.image_url === 'string' ? selectedAnime.image_url : ''}
+          studio={selectedAnime.studios[0]?.name || 'Unknown Studio'}
+          genres={'Unknown'} 
+          aired={selectedAnime.aired.string}
+          totalEpisodes={12} 
+        />
+      )}
       
     </div>
   );
