@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
-// import { getServerSession } from "next-auth";
-// import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function PUT(req: NextRequest) {
   try {
-    // const session = await getServerSession(authOptions);
-    // if (!session || !session.user || !session.user.id) {
-    //     return NextResponse.json({ error: "You must Log-in" }, { status: 401 });
-    // }
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user || !session.user.id) {
+      return NextResponse.json({ error: "You must Log-in" }, { status: 401 });
+    }
 
-    // const userId = Number(session.user.id);
+    const userId = Number(session.user.id);
 
-    const userId = 1; // For testing purposes, replace with session.user.id in production
+    //const userId = 1; // For testing purposes, replace with session.user.id in production
 
     const body = await req.json();
     const { animeId, status, score, progress } = body;

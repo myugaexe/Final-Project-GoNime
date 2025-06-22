@@ -15,7 +15,7 @@ const ProfileView = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('/api/profile');
+        const res = await fetch('/api/userstats');
         const data = await res.json();
 
         if (res.ok) {
