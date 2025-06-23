@@ -30,7 +30,6 @@ export async function PUT(req: NextRequest) {
     if (score !== undefined) updateData.score = score;
     if (progress !== undefined) updateData.progress = progress;
 
-    if (status === "Completed") updateData.progress = 100;
     if (status === "Plan To Watch") updateData.progress = null;
 
     if (Object.keys(updateData).length === 0) {
