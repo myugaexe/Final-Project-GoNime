@@ -6,12 +6,14 @@ export const metadata = {
 
 type Props = {
   params: {
-    id: number;
+    id: string;  
   };
 };
 
 const DetailPage = ({ params }: Props) => {
-  return <DetailView animeId={params.id} />;
+  const animeId = parseInt(params.id, 10); 
+
+  return <DetailView animeId={animeId} />;
 };
 
 export default DetailPage;
