@@ -1,4 +1,4 @@
-import ListView from "@/components/views/pages/List/list";
+import ListView from "@/components/views/pages/List/ListView";
 
 export const metadata = {
   title: "GonNime! | List",

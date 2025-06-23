@@ -1,4 +1,4 @@
-import ProfileView from "@/components/views/pages/Profile/profile";
+import ProfileView from "@/components/views/pages/Profile/ProfileView";
 
 export const metadata = {
   title: "GonNime! | Profile", 

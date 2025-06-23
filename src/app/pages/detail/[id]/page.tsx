@@ -1,4 +1,4 @@
-import DetailView from "@/components/views/pages/Detail/detail";
+import DetailView from "@/components/views/pages/Detail/DetailView";
 
 export const metadata = {
   title: "GonNime!",

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import style from './Detail.module.scss';
-import RateForm from './rateform'; 
+import RateForm from './RateFormDetail'; 
 
 type Anime = {
   trailer?: { embed_url?: string };
