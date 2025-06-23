@@ -4,14 +4,9 @@ export const metadata = {
   title: "GonNime!",
 };
 
-type Props = {
-  params: {
-    id: string;  
-  };
-};
-
-const DetailPage = ({ params }: Props) => {
-  const animeId = parseInt(params.id, 10); 
+const DetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
+  const animeId = parseInt(id, 10);
 
   return <DetailView animeId={animeId} />;
 };
