@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import styles from './List.module.scss';
 import Link from 'next/link';
-import RateForm from './rateform';
+import RateForm from './RateFormList';
 
 type Anime = {
   image_url: string | Blob | undefined;

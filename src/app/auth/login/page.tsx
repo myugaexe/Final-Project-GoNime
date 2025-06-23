@@ -1,4 +1,4 @@
-import LoginView from "@/components/views/auth/Login/login"
+import LoginView from "@/components/views/auth/Login/LoginView"
 
 export const metadata = {
   title: "GonNime!", 

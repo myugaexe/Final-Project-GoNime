@@ -1,5 +1,7 @@
+"use server";
+
 import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth/";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 export default async function GreetingView() {

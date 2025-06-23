@@ -1,17 +1,14 @@
-import DetailView from "@/components/views/pages/Detail/detail";
+import DetailView from "@/components/views/pages/Detail/DetailView";
 
 export const metadata = {
   title: "GonNime!",
 };
 
-type Props = {
-  params: {
-    id: number;
-  };
-};
+const DetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
+  const animeId = parseInt(id, 10);
 
-const DetailPage = ({ params }: Props) => {
-  return <DetailView animeId={params.id} />;
+  return <DetailView animeId={animeId} />;
 };
 
 export default DetailPage;
